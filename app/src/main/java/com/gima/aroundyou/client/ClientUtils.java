@@ -8,13 +8,6 @@ import java.util.Map;
  * This class contains some utility classes required for indexing
  */
 
-public class ClientUtils {
+class ClientUtils {
 
-    public static List<Map<String, Object>> getLocationDataAsArray(List<IndexInputDocument> documents) {
-        List<Map<String, Object>> locationData = new ArrayList<>();
-        for (IndexInputDocument document : documents) {
-            locationData.add(document.getFields());
-        }
-        return locationData;
-    }
 }

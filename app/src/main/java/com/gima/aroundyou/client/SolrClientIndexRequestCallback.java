@@ -8,7 +8,7 @@ import okhttp3.Response;
  * This interface is called when the
  */
 
-public interface SolrClientRequestCallback {
+public interface SolrClientIndexRequestCallback {
 
     public void onFailure(IOException e);
     public void onSuccess(Response response);

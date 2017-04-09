@@ -12,10 +12,10 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.gima.aroundyou.client.IndexInputDocument;
+import com.gima.aroundyou.client.IndexOutputDocument;
 import com.gima.aroundyou.client.IndexerClientException;
 import com.gima.aroundyou.client.SolrClient;
-import com.gima.aroundyou.client.SolrClientRequestCallback;
+import com.gima.aroundyou.client.SolrClientSearchRequestCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -31,10 +31,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Response;
 
 public class AroundYouActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
@@ -178,7 +175,17 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
         updateLocationUI();
         goToDeviceLocation();
         try {
-            client.searchLocationData("d=1&fq={!geofilt}&indent=on&pt=6.9284, 79.8582&q=*:*&sfield=mLocation&wt=json");
+            client.searchLocationData("d=1&fq={!geofilt}&indent=on&pt=6.9284, 79.8582&q=*:*&sfield=mLocation&wt=json", new SolrClientSearchRequestCallback() {
+                @Override
+                public void onFailure(IOException e) {
+
+                }
+
+                @Override
+                public void onSuccess(List<IndexOutputDocument> documents) {
+
+                }
+            });
         } catch (IndexerClientException e) {
             Log.e(TAG, "Error while loading initial Events data: " + e.getMessage(), e);
         }
@@ -186,7 +193,7 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Log.i(TAG, "$$$$$$$$$$$$$$$$$$$$$$");
+        Log.i(TAG, "Clicked on the marker");
         return false;
     }
 
