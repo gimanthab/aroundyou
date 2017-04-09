@@ -3,6 +3,7 @@ package com.gima.aroundyou;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -11,6 +12,10 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.gima.aroundyou.client.IndexInputDocument;
+import com.gima.aroundyou.client.IndexerClientException;
+import com.gima.aroundyou.client.SolrClient;
+import com.gima.aroundyou.client.SolrClientRequestCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -23,6 +28,13 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Response;
 
 public class AroundYouActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
@@ -37,6 +49,7 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_COURSE_LOCATION = 1;
     private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
+    private static SolrClient client;
 
     // Keys for storing activity state.
     private static final String KEY_CAMERA_POSITION = "camera_position";
@@ -68,6 +81,14 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //No need of synchronous block
+        if (client == null) {
+            client = new SolrClient(this);
+        }
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
     }
 
     private void goToDeviceLocation() {
@@ -77,12 +98,12 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
          * onRequestPermissionsResult.
          */
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION)
+                Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
         } else {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_COURSE_LOCATION);
         }
         /*
@@ -119,12 +140,12 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
          * onRequestPermissionsResult.
          */
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION)
+                Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
         } else {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_COURSE_LOCATION);
         }
 
@@ -153,8 +174,14 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMapToolbarEnabled(false);
         mMap.setOnMarkerClickListener(this);
+        mMap.addMarker(new MarkerOptions().position(mDefaultLocation));
         updateLocationUI();
         goToDeviceLocation();
+        try {
+            client.searchLocationData("d=1&fq={!geofilt}&indent=on&pt=6.9284, 79.8582&q=*:*&sfield=mLocation&wt=json");
+        } catch (IndexerClientException e) {
+            Log.e(TAG, "Error while loading initial Events data: " + e.getMessage(), e);
+        }
     }
 
     @Override
