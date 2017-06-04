@@ -3,4 +3,13 @@
     <string name="title_activity_maps">Around You</string>
     <string name="solr_zk_host">http://172.17.0.1:8983/solr</string>
     <string name="location_events_data">/test</string>
+    <string name="title_activity_splash_screen">AroundU</string>
+    <string name="button_next">Next</string>
+    <string name="button_back">Back</string>
+    <string name="title_activity_add_marker">Add Event Location</string>
+    <string name="title_activity_add_title">Add Event Title</string>
+    <string name="title_activity_add_desc">Add Event Description</string>
+    <string name="title_activity_add_expiry_date">Add Event Expiry Date</string>
+    <string name="event_title">Event Title</string>
+    <string name="event_desc">Event Description</string>
 </resources>

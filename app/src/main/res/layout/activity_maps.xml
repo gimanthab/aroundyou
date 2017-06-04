@@ -5,4 +5,23 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.gima.aroundyou.AroundYouActivity" />
+    tools:context="com.gima.aroundyou.AroundYouActivity">
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/cast_ic_notification_2"
+        map:elevation="4dp"
+        map:layout_anchorGravity="bottom|right|end"
+        android:id="@+id/add_marker_btn" />
+
+</fragment>
+
+
+
+
+
+
