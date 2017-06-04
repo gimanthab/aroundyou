@@ -1,61 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_add_description"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.gima.aroundyou.AddDescriptionActivity">
 
     <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+        android:id="@+id/eventTitleTextLayout">
 
-            <EditText
+        <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/event_title"
                 android:id="@+id/txtEventTitle" />
-        </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:maxLength="255"
-                android:maxLines="4"
-                android:hint="@string/event_desc"
-                android:id="@+id/txtEventDesc" />
-
-        </android.support.design.widget.TextInputLayout>
-        <LinearLayout
-        android:orientation="horizontal"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eventTitleTextLayout"
+        android:id="@+id/EventDescTextLayout">
 
-            <Button
-                android:text="@string/button_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnEventDescBack"
-                android:layout_weight="1"
-                style="@style/Widget.AppCompat.Button" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:maxLength="255"
+            android:maxLines="4"
+            android:hint="@string/event_desc"
+            android:id="@+id/txtEventDesc" />
 
-            <Button
-                android:text="@string/button_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnEventDescNext"
-                android:layout_weight="1"
-                style="@style/Widget.AppCompat.Button" />
-        </LinearLayout>
+    </android.support.design.widget.TextInputLayout>
 
-</LinearLayout>
+    <LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:text="@string/button_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnEventDescBack"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button" />
+
+        <Button
+            android:text="@string/button_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnEventDescNext"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button" />
+    </LinearLayout>
+
+</RelativeLayout>

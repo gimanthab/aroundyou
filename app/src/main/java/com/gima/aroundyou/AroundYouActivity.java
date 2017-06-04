@@ -1,6 +1,7 @@
 package com.gima.aroundyou;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.StrictMode;
@@ -166,6 +167,7 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
 
     @Override
     public void onClick(View v) {
-
+        Intent r = new Intent(AroundYouActivity.this, AddExpiryDateActivity.class);
+        startActivity(r);
     }
 }

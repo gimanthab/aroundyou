@@ -12,6 +12,6 @@ public class AddExpiryDateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_marker);
+        setContentView(R.layout.activity_add_expiry_date);
     }
 }
