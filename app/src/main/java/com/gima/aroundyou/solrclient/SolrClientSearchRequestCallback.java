@@ -1,4 +1,4 @@
-package com.gima.aroundyou.client;
+package com.gima.aroundyou.solrclient;
 
 import java.io.IOException;
 import java.util.List;

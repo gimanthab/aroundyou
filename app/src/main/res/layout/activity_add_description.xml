@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.gima.aroundyou.AddDescriptionActivity">
+    tools:context="com.gima.aroundyou.ui.AddDescriptionActivity">
 
     <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -17,7 +17,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/event_title"
-                android:id="@+id/txtEventTitle" />
+                android:id="@+id/txtEventTitle"
+            android:textAlignment="center" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -25,7 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/eventTitleTextLayout"
-        android:id="@+id/EventDescTextLayout">
+        android:id="@+id/EventDescTextLayout"
+        android:layout_marginTop="10dp">
 
         <EditText
             android:layout_width="match_parent"
@@ -42,9 +44,9 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <Button
             android:text="@string/button_back"

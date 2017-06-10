@@ -1,4 +1,4 @@
-package com.gima.aroundyou.client;
+package com.gima.aroundyou.solrclient;
 
 import android.content.Context;
 

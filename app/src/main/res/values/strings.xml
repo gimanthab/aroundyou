@@ -6,10 +6,22 @@
     <string name="title_activity_splash_screen">AroundU</string>
     <string name="button_next">Next</string>
     <string name="button_back">Back</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_submit">Submit</string>
     <string name="title_activity_add_marker">Add Event Location</string>
     <string name="title_activity_add_title">Add Event Title</string>
     <string name="title_activity_add_desc">Add Event Description</string>
     <string name="title_activity_add_expiry_date">Add Event Expiry Date</string>
     <string name="event_title">Event Title</string>
     <string name="event_desc">Event Description</string>
+    <string-array name="spinnerItems">
+        <item>Food</item>
+        <item>Shopping</item>
+        <item>Electronics</item>
+        <item>Entertainment</item>
+        <item>Incident</item>
+    </string-array>
+    <string name="event_category">Event Category</string>
+    <string name="additional_tags">Additional Tags</string>
+    <string name="add_tag">Add Tag</string>
 </resources>

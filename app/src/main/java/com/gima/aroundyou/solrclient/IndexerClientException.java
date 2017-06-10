@@ -1,4 +1,4 @@
-package com.gima.aroundyou.client;
+package com.gima.aroundyou.solrclient;
 
 /**
  * Exception which is thrown when something go wrong in indexer

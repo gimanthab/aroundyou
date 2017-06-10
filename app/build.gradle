@@ -43,6 +43,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:10.2.1'
     testCompile 'junit:junit:3.8.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile 'com.android.support:gridlayout-v7:25.3.1'
+    compile 'me.gujun.android.taggroup:library:1.4@aar'
 }
 
 

@@ -28,27 +28,27 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".AroundYouActivity" />
+        <activity android:name=".ui.AroundYouActivity" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddMarkerActivity"
-            android:label="Add Event Location"
-            />
+            android:name=".ui.AddMarkerActivity"
+            android:label="Add Event Location" />
         <activity
-            android:name=".AddExpiryDateActivity"
-            android:label="Add Event Expiry Date"
-            />
+            android:name=".ui.AddExpiryDateActivity"
+            android:label="Add Event Expiry Date" />
         <activity
-            android:name=".AddDescriptionActivity"
-            android:label="Add Event Description"
-            />
+            android:name=".ui.AddDescriptionActivity"
+            android:label="Add Event Description" />
+        <activity android:name=".ui.AddCategoryActivity"
+            android:label="Select Event Category" />
     </application>
 
 </manifest>

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.gima.aroundyou.AddExpiryDateActivity">
+    tools:context="com.gima.aroundyou.ui.AddExpiryDateActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -11,6 +11,15 @@
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
+
+    <CalendarView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/calendarExpiry"
+        style="@android:style/Widget.DeviceDefault.CalendarView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <LinearLayout
         android:id="@+id/fullscreen_content_controls"
@@ -30,22 +39,12 @@
             style="@style/Widget.AppCompat.Button" />
 
         <Button
-            android:id="@+id/btnExpiryNext"
+            android:id="@+id/btnExpirySubmit"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/button_next" />
-
+            android:text="@string/button_submit" />
     </LinearLayout>
-
-    <CalendarView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/calendarView2"
-        style="@android:style/Widget.DeviceDefault.CalendarView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

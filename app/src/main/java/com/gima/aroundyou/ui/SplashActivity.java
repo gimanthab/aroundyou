@@ -1,4 +1,4 @@
-package com.gima.aroundyou;
+package com.gima.aroundyou.ui;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;

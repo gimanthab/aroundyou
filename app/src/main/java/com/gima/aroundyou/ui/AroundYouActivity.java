@@ -1,4 +1,4 @@
-package com.gima.aroundyou;
+package com.gima.aroundyou.ui;
 
 import android.Manifest;
 import android.content.Intent;
@@ -9,16 +9,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.gima.aroundyou.client.IndexOutputDocument;
-import com.gima.aroundyou.client.IndexerClientException;
-import com.gima.aroundyou.client.SolrClient;
-import com.gima.aroundyou.client.SolrClientSearchRequestCallback;
+import com.gima.aroundyou.R;
+import com.gima.aroundyou.solrclient.IndexOutputDocument;
+import com.gima.aroundyou.solrclient.IndexerClientException;
+import com.gima.aroundyou.solrclient.SolrClient;
+import com.gima.aroundyou.solrclient.SolrClientSearchRequestCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -167,7 +167,7 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
 
     @Override
     public void onClick(View v) {
-        Intent r = new Intent(AroundYouActivity.this, AddExpiryDateActivity.class);
-        startActivity(r);
+        Intent intent = new Intent(AroundYouActivity.this, AddMarkerActivity.class);
+        startActivity(intent);
     }
 }
