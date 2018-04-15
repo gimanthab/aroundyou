@@ -40,15 +40,19 @@
         </activity>
         <activity
             android:name=".ui.AddMarkerActivity"
-            android:label="Add Event Location" />
+            android:label="Add Event | Event Location" />
         <activity
             android:name=".ui.AddExpiryDateActivity"
-            android:label="Add Event Expiry Date" />
+            android:label="Add Event | Expiry Date" />
         <activity
             android:name=".ui.AddDescriptionActivity"
-            android:label="Add Event Description" />
-        <activity android:name=".ui.AddCategoryActivity"
-            android:label="Select Event Category" />
+            android:label="Add Event | Description" />
+        <activity
+            android:name=".ui.AddCategoryActivity"
+            android:label="Add Event | Category" />
+        <activity
+            android:name=".ui.FilterEventActivity"
+            android:label="Filter Events" />
     </application>
 
 </manifest>

@@ -1,16 +1,20 @@
 package com.gima.aroundyou.ui;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.Toast;
 
 import com.gima.aroundyou.R;
 import com.gima.aroundyou.properties.AddEventProperties;
+import com.gima.aroundyou.solrclient.Constants;
 import com.gima.aroundyou.solrclient.IndexInputDocument;
 import com.gima.aroundyou.solrclient.IndexerClientException;
 import com.gima.aroundyou.solrclient.SolrClient;
@@ -18,6 +22,8 @@ import com.gima.aroundyou.solrclient.SolrClientIndexRequestCallback;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import okhttp3.Response;
@@ -31,6 +37,7 @@ public class AddExpiryDateActivity extends AppCompatActivity implements View.OnC
     private CalendarView calendar;
     private AddEventProperties addEventProperties;
     private SolrClient solrClient;
+    private String TAG = AddExpiryDateActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,19 +57,49 @@ public class AddExpiryDateActivity extends AppCompatActivity implements View.OnC
         if (v.getId() == R.id.btnExpirySubmit) {
             addEventProperties.setEventExpiryDate(calendar.getDate());
 
-          //  solrClient.indexLocationData();
+            try {
+                IndexInputDocument document = createNewEventDocument();
+                List<IndexInputDocument> docs = new ArrayList<>();
+                docs.add(document);
+                final ProgressDialog progressDialog = new ProgressDialog(AddExpiryDateActivity.this);
+                progressDialog.setTitle(getString(R.string.adding_new_event));
+                progressDialog.setMessage(getString(R.string.please_wait_while_adding_event));
+                progressDialog.show();
+                solrClient.indexLocationData(docs, new SolrClientIndexRequestCallback() {
+                    @Override
+                    public void onFailure(IOException e) {
+                        Log.e(TAG, "Adding location data failed. Error: " + e.getMessage(), e);
+                        progressDialog.dismiss();
+                        goToHomeActivity(false);
+                    }
+
+                    @Override
+                    public void onSuccess(Response response) {
+                        progressDialog.dismiss();
+                        goToHomeActivity(true);
+                    }
+                });
+            } catch (IndexerClientException e) {
+                Log.e(TAG, "Error while adding location data: " + e.getMessage(), e);
+            }
 
         } else if (v.getId() == R.id.btnExpiryBack) {
             addEventProperties.setEventExpiryDate(null);
-            Intent intent = new Intent(AddExpiryDateActivity.this, AddDescriptionActivity.class);
-            startActivity(intent);
+            finish();
         }
+    }
+
+    private void goToHomeActivity(boolean submitSuccess) {
+        addEventProperties.reset();
+        Intent intent = new Intent(AddExpiryDateActivity.this, AroundYouActivity.class);
+        intent.putExtra(Constants.SUBMIT_SUCCESSFUL, submitSuccess);
+        startActivity(intent);
     }
 
     private IndexInputDocument createNewEventDocument() throws IndexerClientException {
         IndexInputDocument document = new IndexInputDocument();
         document.addField(IndexInputDocument.FIELD_ID, generateUUID());
-        document.addField(IndexInputDocument.FIELD_CATEGORY, addEventProperties.getEventCategory());
+        document.addField(IndexInputDocument.FIELD_CATEGORY, addEventProperties.getEventCategories());
         document.addField(IndexInputDocument.FIELD_TITLE, addEventProperties.getEventTitle());
         document.addField(IndexInputDocument.FIELD_DESCRIPTION, addEventProperties.getEventDescription());
         document.addField(IndexInputDocument.FIELD_EXPIRY_DATE, addEventProperties.getEventExpiryDate());

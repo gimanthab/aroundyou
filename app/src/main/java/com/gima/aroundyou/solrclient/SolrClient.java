@@ -1,6 +1,7 @@
 package com.gima.aroundyou.solrclient;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.gima.aroundyou.R;
 import com.google.gson.Gson;
@@ -29,11 +30,13 @@ public class SolrClient {
     private static OkHttpClient client = new OkHttpClient();
     private static Gson gson = new Gson();
     private String locationEventsCollection;
+    private String deviceCollection;
     private static final String TAG = SolrClient.class.getSimpleName();
 
     public SolrClient(Context context) {
         this.zkHost = context.getString(R.string.solr_zk_host);
         this.locationEventsCollection = context.getString(R.string.location_events_data);
+        this.deviceCollection = context.getString(R.string.device_data);
     }
 
     private static List<Map<String, Object>> getLocationDataAsArray(List<IndexInputDocument> documents) {
@@ -61,7 +64,42 @@ public class SolrClient {
     public void indexLocationData(List<IndexInputDocument> docs, final SolrClientIndexRequestCallback callback) {
         List<Map<String, Object>> locationDataArray = getLocationDataAsArray(docs);
         String locationDataAsString = gson.toJson(locationDataArray);
+        Log.d(TAG, "locationData: " + locationDataAsString);
         Request request = new Request.Builder().url(zkHost + locationEventsCollection +
+                Constants.ADD_DOCUMENTS_URL_PATH).post(RequestBody.create(MediaType.parse(Constants.TEXT_JSON),
+                locationDataAsString)).build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                callback.onSuccess(response);
+            }
+        });
+    }
+
+    public void indexDeviceData(List<IndexInputDocument> docs) throws IndexerClientException {
+        List<Map<String, Object>> locationDataArray = getLocationDataAsArray(docs);
+        String locationDataAsString = gson.toJson(locationDataArray);
+        Request request = new Request.Builder().url(zkHost + deviceCollection +
+                Constants.ADD_DOCUMENTS_URL_PATH).post(RequestBody.create(MediaType.parse(Constants.TEXT_JSON),
+                locationDataAsString)).build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+        } catch (IOException e) {
+            throw new IndexerClientException("Error while adding device data: " + e.getMessage(), e);
+        }
+    }
+
+    public void indexDeviceData(List<IndexInputDocument> docs, final SolrClientIndexRequestCallback callback) {
+        List<Map<String, Object>> locationDataArray = getLocationDataAsArray(docs);
+        String locationDataAsString = gson.toJson(locationDataArray);
+        Request request = new Request.Builder().url(zkHost + deviceCollection +
                 Constants.ADD_DOCUMENTS_URL_PATH).post(RequestBody.create(MediaType.parse(Constants.TEXT_JSON),
                 locationDataAsString)).build();
         client.newCall(request).enqueue(new Callback() {
@@ -117,6 +155,46 @@ public class SolrClient {
                     callback.onSuccess(indexOutputDocuments);
                 }
             });
+    }
+
+    public List<IndexOutputDocument> searchDeviceData(String query) throws IndexerClientException{
+        List<IndexOutputDocument> indexOutputDocuments;
+        Request request = new Request.Builder().url(zkHost + deviceCollection +
+                Constants.SEARCH_DOCUMENTS_URL_PATH + query).get().build();
+        String str;
+        try {
+            Response response = client.newCall(request).execute();
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            str = response.body().string();
+            indexOutputDocuments = createIndexOutputDocuments(str);
+            if (indexOutputDocuments != null) return indexOutputDocuments;
+
+        } catch (IOException e) {
+            throw new IndexerClientException("Error while fetching device data: " + e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public void searchDeviceData(String query, final SolrClientSearchRequestCallback callback) throws IndexerClientException{
+
+        Request request = new Request.Builder().url(zkHost + deviceCollection +
+                Constants.SEARCH_DOCUMENTS_URL_PATH + query).get().build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                String str = response.body().string();
+                List<IndexOutputDocument> indexOutputDocuments = createIndexOutputDocuments(str);
+                callback.onSuccess(indexOutputDocuments);
+            }
+        });
     }
 
     private List<IndexOutputDocument> createIndexOutputDocuments(String str) {

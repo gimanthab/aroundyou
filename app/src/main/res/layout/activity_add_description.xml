@@ -36,7 +36,8 @@
             android:maxLength="255"
             android:maxLines="4"
             android:hint="@string/event_desc"
-            android:id="@+id/txtEventDesc" />
+            android:id="@+id/txtEventDesc"
+            android:imeOptions="actionNext" />
 
     </android.support.design.widget.TextInputLayout>
 

@@ -49,8 +49,7 @@ public class AddDescriptionActivity extends AppCompatActivity implements View.On
         } else if (v.getId() == R.id.btnEventDescBack) {
             addEventProperties.setEventDescription(null);
             addEventProperties.setEventTitle(null);
-            Intent intent = new Intent(AddDescriptionActivity.this, AddMarkerActivity.class);
-            startActivity(intent);
+            finish();
         }
     }
 }

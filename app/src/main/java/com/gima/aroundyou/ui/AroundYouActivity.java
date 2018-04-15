@@ -7,14 +7,16 @@ import android.location.Location;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import com.gima.aroundyou.R;
+import com.gima.aroundyou.solrclient.Constants;
 import com.gima.aroundyou.solrclient.IndexOutputDocument;
 import com.gima.aroundyou.solrclient.IndexerClientException;
 import com.gima.aroundyou.solrclient.SolrClient;
@@ -36,7 +38,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class AroundYouActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
-        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, FloatingActionButton.OnClickListener {
+        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, OnClickListener {
 
     private static final String TAG = AroundYouActivity.class.getSimpleName();
     private GoogleMap mMap;
@@ -62,7 +64,15 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
             mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
             mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
-
+        Intent intent = getIntent();
+        if (intent != null) {
+            boolean submitSuccess = intent.getBooleanExtra(Constants.SUBMIT_SUCCESSFUL, true);
+            if (!submitSuccess) {
+                Toast.makeText(this, "Could not connect our server.. Please try again later",
+                        Toast.LENGTH_LONG).show();
+                intent.removeExtra(Constants.SUBMIT_SUCCESSFUL);
+            }
+        }
         setContentView(R.layout.activity_maps);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */,
@@ -78,9 +88,6 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
         }
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
-        FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.add_marker_btn);
-        myFab.setOnClickListener(this);
     }
 
     private void goToDeviceLocation() {
@@ -91,7 +98,7 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
             return;
         }
         mMap.setMyLocationEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mCameraPosition != null) {
             mMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
@@ -114,7 +121,7 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
         mMap.setOnMarkerClickListener(this);
         goToDeviceLocation();
         try {
-            client.searchLocationData("d=1&fq={!geofilt}&indent=on&pt=6.9284, 79.8582&q=*:*&sfield=mLocation&wt=json", new SolrClientSearchRequestCallback() {
+            client.searchLocationData("d=1&fq={!geofilt}&indent=on&pt=6.9284, 79.8582&q=*:*&sfield=mLocation&wt=json&start=0&rows=100", new SolrClientSearchRequestCallback() {
                 @Override
                 public void onFailure(IOException e) {
 
@@ -123,7 +130,7 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
                 @Override
                 public void onSuccess(List<IndexOutputDocument> documents) {
                         for (IndexOutputDocument doc : documents) {
-
+                            Log.i(TAG, "doc: " + doc.getFieldValue("title"));
                         }
                 }
             });
@@ -167,7 +174,14 @@ public class AroundYouActivity extends FragmentActivity implements OnMapReadyCal
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(AroundYouActivity.this, AddMarkerActivity.class);
-        startActivity(intent);
+        if (v.getId() == R.id.btnAddMarker) {
+            finish();
+            Intent intent = new Intent(AroundYouActivity.this, AddMarkerActivity.class);
+            startActivity(intent);
+        } else if (v.getId() == R.id.btnPreferences) {
+            finish();
+            Intent intent = new Intent(AroundYouActivity.this, FilterEventActivity.class);
+            startActivity(intent);
+        }
     }
 }

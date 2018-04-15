@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_add_category"
     android:layout_width="match_parent"
@@ -60,7 +61,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:id="@+id/txtAddTag" />
         </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
@@ -91,29 +93,38 @@
             style="@style/Widget.AppCompat.Button" />
     </LinearLayout>
 
-    <Button
-        android:text="@string/add_tag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnCategoryAddTag"
-        android:layout_below="@+id/tags_linearlayout"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <me.kaede.tagview.TagView
-        android:id="@+id/tagview"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lineMargin="5dp"
-        android:tagMargin="3dp"
-        android:textPaddingBottom="3dp"
-        android:textPaddingLeft="10dp"
-        android:textPaddingRight="10dp"
-        android:textPaddingTop="3dp"
-        android:layout_below="@+id/btnCategoryAddTag"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true">
-    </me.kaede.tagview.TagView>
+        android:layout_below="@+id/tags_linearlayout"
+        android:id="@+id/addTag_linearlayout">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="@string/add_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnCategoryAddTag"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <co.lujun.androidtagview.TagContainerLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        app:container_enable_drag="false"
+        app:horizontal_interval="10dp"
+        app:vertical_interval="10dp"
+        app:container_background_color="#80FFFFFF"
+        app:tag_clickable="true"
+        app:tag_theme="random"
+        android:layout_below="@+id/addTag_linearlayout"
+        android:id="@+id/tag_panel"
+        android:layout_above="@+id/buttons_linearlayout" />
 
 </RelativeLayout>

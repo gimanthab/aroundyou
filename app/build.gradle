@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.gima.aroundyou"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -44,7 +44,7 @@ dependencies {
     testCompile 'junit:junit:3.8.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     compile 'com.android.support:gridlayout-v7:25.3.1'
-    compile 'me.gujun.android.taggroup:library:1.4@aar'
+    compile 'co.lujun:androidtagview:1.1.4'
 }
 
 

@@ -3,25 +3,45 @@
     <string name="title_activity_maps">Around You</string>
     <string name="solr_zk_host">http://172.17.0.1:8983/solr</string>
     <string name="location_events_data">/test</string>
+    <string name="device_data">/devicedata</string>
     <string name="title_activity_splash_screen">AroundU</string>
     <string name="button_next">Next</string>
     <string name="button_back">Back</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_submit">Submit</string>
+    <string name="button_filter">Filter</string>
     <string name="title_activity_add_marker">Add Event Location</string>
     <string name="title_activity_add_title">Add Event Title</string>
     <string name="title_activity_add_desc">Add Event Description</string>
     <string name="title_activity_add_expiry_date">Add Event Expiry Date</string>
     <string name="event_title">Event Title</string>
     <string name="event_desc">Event Description</string>
+    <string name="filter_categories">Categories</string>
+    <string name="filter_search">Advanced Search</string>
     <string-array name="spinnerItems">
-        <item>Food</item>
-        <item>Shopping</item>
-        <item>Electronics</item>
-        <item>Entertainment</item>
-        <item>Incident</item>
+        <item>@string/category_food</item>
+        <item>@string/category_shopping</item>
+        <item>@string/category_property</item>
+        <item>@string/category_electronics</item>
+        <item>@string/category_Entertainment</item>
+        <item>@string/category_incident</item>
     </string-array>
     <string name="event_category">Event Category</string>
     <string name="additional_tags">Additional Tags</string>
     <string name="add_tag">Add Tag</string>
+    <string name="adding_new_event">Adding New Event</string>
+    <string name="please_wait_while_adding_event">"Please wait while the event is added"</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="category_food">Food</string>
+    <string name="category_shopping">Shopping</string>
+    <string name="category_property">Property</string>
+    <string name="category_electronics">Electronics</string>
+    <string name="category_Entertainment">Entertainment</string>
+    <string name="category_incident">Incident</string>
 </resources>

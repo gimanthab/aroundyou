@@ -1,24 +1,72 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:id="@+id/map_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.gima.aroundyou.ui.AroundYouActivity">
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.gima.aroundyou.ui.AroundYouActivity">
 
 
-    <android.support.design.widget.FloatingActionButton
+    </fragment>
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/cast_ic_notification_2"
-        map:elevation="4dp"
-        map:layout_anchorGravity="bottom|right|end"
-        android:id="@+id/add_marker_btn" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
 
-</fragment>
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add_location_icon"
+            android:id="@+id/btnAddMarker"
+            app:backgroundTint="@android:color/white"
+            app:elevation="7dp"
+            android:layout_margin="8dp"
+            android:onClick="onClick" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/preferences_icon"
+            android:id="@+id/btnPreferences"
+            app:backgroundTint="@android:color/white"
+            app:elevation="7dp"
+            android:layout_margin="8dp"
+            android:onClick="onClick" />
+
+    </LinearLayout>
+
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:id="@+id/txtSearchEvent"
+        android:animationCache="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:imeOptions="actionSearch"
+        android:layout_margin="16dp"
+        android:inputType="textFilter"
+        android:elevation="7dp"
+        android:clickable="true">
+
+    </SearchView>
+
+
+</RelativeLayout>
 
 
 

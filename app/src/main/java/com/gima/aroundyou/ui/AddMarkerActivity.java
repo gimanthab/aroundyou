@@ -1,8 +1,6 @@
 package com.gima.aroundyou.ui;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -18,10 +16,6 @@ import android.widget.Button;
 
 import com.gima.aroundyou.R;
 import com.gima.aroundyou.properties.AddEventProperties;
-import com.gima.aroundyou.solrclient.IndexOutputDocument;
-import com.gima.aroundyou.solrclient.IndexerClientException;
-import com.gima.aroundyou.solrclient.SolrClient;
-import com.gima.aroundyou.solrclient.SolrClientSearchRequestCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -31,20 +25,18 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
-import java.util.List;
-
 /**
  * This class represents the logic for adding the marker for new events
  */
-public class AddMarkerActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
-        GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMapLongClickListener,
+public class AddMarkerActivity extends AppCompatActivity implements OnMapReadyCallback,
+        GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, View.OnClickListener {
 
     private static final String TAG = AroundYouActivity.class.getSimpleName();
@@ -52,7 +44,6 @@ public class AddMarkerActivity extends AppCompatActivity implements OnMapReadyCa
     private Location mLastKnownLocation;
     private GoogleApiClient mGoogleApiClient;
     private CameraPosition mCameraPosition;
-    private Marker currentMarker;
     private AddEventProperties addEventProperties;
 
     private static final int DEFAULT_ZOOM = 15;
@@ -132,55 +123,25 @@ public class AddMarkerActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
-        Log.i(TAG, "Clicked on the marker");
-        return false;
-    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMapToolbarEnabled(true);
-        mMap.setOnMarkerClickListener(this);
-        mMap.setOnMapLongClickListener(this);
         goToDeviceLocation();
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnAddMarkerNext) {
-            if (currentMarker != null) {
-                addEventProperties.setEventLocation(currentMarker.getPosition());
-                Intent intent = new Intent(AddMarkerActivity.this, AddCategoryActivity.class);
-                startActivity(intent);
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Long press on map to mark event location")
-                        .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
+            addEventProperties.setEventLocation(mMap.getCameraPosition().target);
+            Intent intent = new Intent(AddMarkerActivity.this, AddCategoryActivity.class);
+            startActivity(intent);
+
         } else if (v.getId() == R.id.btnAddMarkerCancel) {
             addEventProperties.reset();
+            finish();
             Intent intent = new Intent(AddMarkerActivity.this, AroundYouActivity.class);
             startActivity(intent);
-        }
-    }
-
-    @Override
-    public void onMapLongClick(LatLng latLng) {
-        synchronized (this) {
-            if (currentMarker != null) {
-                currentMarker.remove();
-            }
-            currentMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(addEventProperties.getEventTitle())
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         }
     }
 }
